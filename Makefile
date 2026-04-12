@@ -13,7 +13,7 @@ push:
 	docker push $(IMAGE):latest
 
 logs:
-	ssh robbohome-server 'cd ~/robbohome/hello-world && docker compose -f docker-compose.prod.yml logs -f'
+	ssh robbohome-server 'cd ~/RobboHome/data/hello-world && docker compose -f docker-compose.prod.yml logs -f'
 
 bump-patch:
 	@bash scripts/bump-version.sh patch

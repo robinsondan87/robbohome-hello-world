@@ -43,8 +43,8 @@ jobs:
 
       - name: Deploy on server
         run: |
-          mkdir -p ~/robbohome/hello-world
-          cd ~/robbohome/hello-world
+          mkdir -p ~/RobboHome/data/hello-world
+          cd ~/RobboHome/data/hello-world
           echo "VERSION=${{ steps.version.outputs.VERSION }}" > .env
           cp $GITHUB_WORKSPACE/docker-compose.prod.yml ./docker-compose.prod.yml
           docker compose -f docker-compose.prod.yml pull
