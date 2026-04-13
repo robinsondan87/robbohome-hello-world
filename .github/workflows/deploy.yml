@@ -11,8 +11,26 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  check-changelog:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 2
+
+      - name: Check CHANGELOG.md was updated
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -q "CHANGELOG.md"; then
+            echo "CHANGELOG.md updated."
+          else
+            echo "ERROR: CHANGELOG.md was not updated. Please document your changes before merging."
+            exit 1
+          fi
+
   build-and-deploy:
     runs-on: self-hosted
+    needs: check-changelog
     permissions:
       contents: read
       packages: write
