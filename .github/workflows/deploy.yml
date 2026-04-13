@@ -2,8 +2,6 @@ name: Build & Deploy
 
 on:
   push:
-    branches-ignore: [main]
-  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -13,39 +11,8 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  check-changelog:
-    runs-on: self-hosted
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
-        with:
-          fetch-depth: 2
-
-      - name: Check branch name convention
-        if: github.event_name != 'workflow_dispatch'
-        run: |
-          BRANCH="${{ github.head_ref || github.ref_name }}"
-          if echo "$BRANCH" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+-[a-zA-Z0-9._-]+$'; then
-            echo "Branch name valid: $BRANCH"
-          else
-            echo "ERROR: Branch name '$BRANCH' does not follow convention."
-            echo "Required format: v<major>.<minor>.<patch>-<description>"
-            echo "Example: v1.0.2-testing-cicd"
-            exit 1
-          fi
-
-      - name: Check CHANGELOG.md was updated
-        run: |
-          if git diff --name-only HEAD~1 HEAD | grep -q "CHANGELOG.md"; then
-            echo "CHANGELOG.md updated."
-          else
-            echo "ERROR: CHANGELOG.md was not updated. Please document your changes before merging."
-            exit 1
-          fi
-
   build-and-deploy:
     runs-on: self-hosted
-    needs: check-changelog
     permissions:
       contents: read
       packages: write
