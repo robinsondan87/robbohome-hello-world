@@ -3,6 +3,12 @@
 All notable changes to this project will be documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.0.4] - 2026-04-13
+### Added
+- HTML version page at / — shows current version visually
+- /healthz endpoint returns JSON with status and version
+- CI check: CHANGELOG latest version must match VERSION file
+
 ## [1.0.3] - 2026-04-13
 ### Changed
 - Split CI/CD into two workflows: ci.yml (quality gates) and deploy.yml (build+deploy)

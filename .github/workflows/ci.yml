@@ -36,3 +36,15 @@ jobs:
             echo "ERROR: CHANGELOG.md was not updated. Please document your changes before merging."
             exit 1
           fi
+
+      - name: Check CHANGELOG version matches VERSION file
+        run: |
+          FILE_VERSION=$(cat VERSION)
+          CHANGELOG_VERSION=$(grep -m1 '^## \[' CHANGELOG.md | sed 's/## \[\(.*\)\].*/\1/')
+          if [ "$FILE_VERSION" = "$CHANGELOG_VERSION" ]; then
+            echo "Version match: $FILE_VERSION"
+          else
+            echo "ERROR: VERSION file ($FILE_VERSION) does not match latest CHANGELOG entry ($CHANGELOG_VERSION)."
+            echo "Bump the VERSION file or add a CHANGELOG entry for v$FILE_VERSION."
+            exit 1
+          fi
