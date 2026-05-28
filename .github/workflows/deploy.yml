@@ -44,11 +44,11 @@ jobs:
 
       - name: Deploy on server
         run: |
-          mkdir -p ~/data/hello-world
-          cd ~/data/hello-world
+          mkdir -p /opt/stacks/hello-world
+          cd /opt/stacks/hello-world
           echo "VERSION=${{ steps.version.outputs.VERSION }}" > .env
-          cp $GITHUB_WORKSPACE/docker-compose.prod.yml ./docker-compose.prod.yml
-          docker compose -f docker-compose.prod.yml pull
-          docker compose -f docker-compose.prod.yml up -d
+          cp $GITHUB_WORKSPACE/docker-compose.prod.yml ./compose.yml
+          docker compose pull
+          docker compose up -d
           docker image prune -f
-          echo "Deployed hello-world v${{ steps.version.outputs.VERSION }}"
+          echo "Deployed hello-world v${{ steps.version.outputs.VERSION }} to /opt/stacks/hello-world"
